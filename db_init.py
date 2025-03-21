@@ -127,3 +127,38 @@ def create_tables():
 
 
 create_tables()
+
+avec ses tables, peux-tu m'écrire le code en SQL permettant d'utiliser le user le plus puissant en moyenne :  
+    CREATE TABLE IF NOT EXISTS user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        pseudo TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        is_coach NUMERIC NOT NULL
+    )
+     
+    CREATE TABLE IF NOT EXISTS caracteristic (
+        gender INTEGER NOT NULL,
+        age INTEGER NOT NULL,
+        weight REAL NOT NULL,
+        height REAL NOT NULL,
+        id_user INTEGER NOT NULL UNIQUE,
+        FOREIGN KEY(id_user) REFERENCES user(id)
+    )
+    CREATE TABLE IF NOT EXISTS test_type (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name_type TEXT NOT NULL UNIQUE
+    )
+    CREATE TABLE IF NOT EXISTS test (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        power_max REAL NOT NULL,
+        hr_max REAL NOT NULL,
+        vo2_max REAL NOT NULL,
+        rf_max REAL NOT NULL,
+        cadence_max REAL NOT NULL,
+        date DATE DEFAULT (DATE('now')),
+        id_user INTEGER NOT NULL,
+        id_test_type INTEGER NOT NULL,
+        FOREIGN KEY(id_user) REFERENCES user(id),
+        FOREIGN KEY(id_test_type) REFERENCES test_type(id)
+    )

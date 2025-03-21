@@ -8,6 +8,10 @@ router = APIRouter()
 
 @router.get("/{id}")
 async def read_user(id: int):
+    """
+    retourne un utilisateur en fonction de son id
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -17,7 +21,7 @@ async def read_user(id: int):
     """
 
     cursor.execute(request, (id,))
-    result = cursor.fetchall() # Récupération de tous les résultats dans une liste
+    result = cursor.fetchone() # Récupération de tous les résultats dans une liste
     print(result)
     conn.close()
     return result
@@ -25,6 +29,10 @@ async def read_user(id: int):
 
 @router.get("/")
 async def read_user_all():
+    """
+    retourne tous les utilisateurs
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -51,29 +59,12 @@ async def read_user_all():
     return convert_results
 
 
-@router.post("/add")
-async def create_user(create_user: UserCreate):
-    conn = sqlite3.connect('database.db') # Connexion à la base de données
-    cursor = conn.cursor() # Création d'un curseur
-
-    pseudo = create_user.pseudo
-    email = create_user.email
-    password = create_user.password
-    is_coach = create_user.is_coach
-
-    print(f"pseudo = {pseudo}, email = {email}, password = {password}, is_coach = {str(is_coach)}")
-
-    request = """
-    INSERT INTO user (pseudo, email, password, is_coach)
-    VALUES (?, ?, ?, ?);"""
-
-    cursor.execute(request, (pseudo, email, password, is_coach))
-    conn.commit()
-    conn.close()
-
-
 @router.patch("/update/{id_user}")
 async def update_user(id_user: int, update_user: UserUpdate):
+    """
+    Mettre à jour des informations d'un utilisateur en fonction de son id (id_user)
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -95,6 +86,10 @@ async def update_user(id_user: int, update_user: UserUpdate):
 
 @router.patch("/update_password/{id_user}")
 async def update_user_password(id_user: int, password_updated: UserUpdatePassword):
+    """
+    Mettre à jour le mot de passe d'un utlisateur en fonction de son id (id_user)
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -113,6 +108,10 @@ async def update_user_password(id_user: int, password_updated: UserUpdatePasswor
 
 @router.delete("/delete/{id_user}")
 async def delete_user(id_user):
+    """
+    Supprime un utilisateur en fonction de son id (id_user)
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 

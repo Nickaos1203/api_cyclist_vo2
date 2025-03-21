@@ -15,6 +15,7 @@ class TestCreate(BaseModel):
 
 
 class TestUpdate(BaseModel):
+    id: int
     power_max: Optional[float] = None
     hr_max: Optional[float] = None
     vo2_max: Optional[float] = None

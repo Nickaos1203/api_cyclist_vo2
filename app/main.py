@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 import sqlite3
-from app.routes.user import router
+from app.core.jwt_handler import get_current_user
 from app.routes import user, test, caracteristic, test_type, auth
 
 app = FastAPI()

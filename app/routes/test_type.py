@@ -9,6 +9,9 @@ router = APIRouter()
 
 @router.get("/")
 async def read_all_test_names():
+    """
+    retourne tous les nom des tests
+    """
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -35,8 +38,12 @@ async def read_all_test_names():
     return convert_results
 
 
-@router.post("/add", response_model=TestTypeCreate)
+@router.post("/add")
 async def create_test_type(input_test_type: TestTypeCreate):
+    """
+    Créer d'un type de test
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -53,6 +60,9 @@ async def create_test_type(input_test_type: TestTypeCreate):
 
 @router.delete("/{id}")
 async def delete_user(id: int):
+    """
+    suppression d'un type de test en fonction de son id
+    """
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 

@@ -8,7 +8,9 @@ router = APIRouter()
 @router.get("/")
 async def read_all_caracteristics():
     """
+    retourne les caractéristiques de tous les utilisateurs
     """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -37,6 +39,10 @@ async def read_all_caracteristics():
 
 @router.get("/{id}")
 async def read_caracteristic(id: int):
+    """
+    retourne les caractéristiques d'un utilisateur en fonction de son id
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -46,34 +52,42 @@ async def read_caracteristic(id: int):
     """
 
     cursor.execute(request, (id,))
-    result = cursor.fetchall() # Récupération de tous les résultats dans une liste
+    result = cursor.fetchone() # Récupération de tous les résultats dans une liste
     print(result)
     conn.close()
     return result
 
 
-@router.post("/add/{id_user}", response_model=CaracteristicCreate)
-async def create_caracteristic(id_user: int, create_caracteristic: CaracteristicCreate):
+@router.post("/add")
+async def create_caracteristic(create_caracteristic: CaracteristicCreate):
+    """
+    Ajoute des caractéristiques à un utilisateur en fonction de son id(id_user)
+    """
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
-    genre = create_caracteristic.genre
+    gender = create_caracteristic.gender
     age = create_caracteristic.age
     weight = create_caracteristic.weight
     height = create_caracteristic.height
+    id_user = create_caracteristic.id_user
 
     request = """
-    INSERT INTO caracteristic (genre, age, weight, height)
-    VALUES (?, ?, ?, ?)
-    WHERE id = ?;"""
+    INSERT INTO caracteristic (gender, age, weight, height, id_user)
+    VALUES (?, ?, ?, ?, ?);
+    """
 
-    cursor.execute(request, (genre, age, weight, height, id_user))
+    cursor.execute(request, (gender, age, weight, height, id_user))
     conn.commit()
     conn.close()
 
 
-@router.put("/update/{id_user}", response_model=CaracteristicUpdate)
+@router.put("/update/{id_user}")
 async def update_caracteristic(id_user: int, update_caracteristic: CaracteristicUpdate):
+    """
+    Mettre à jour les caractéristiques d'un utilisateur en fonction de son id
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
@@ -95,6 +109,10 @@ async def update_caracteristic(id_user: int, update_caracteristic: Caracteristic
 
 @router.delete("/delete/{id_user}")
 async def delete_caracteristic(id_user):
+    """
+    Supprime les caractéristiques d'un utilisateur en fonction de son id (id_user)
+    """
+
     conn = sqlite3.connect('database.db') # Connexion à la base de données
     cursor = conn.cursor() # Création d'un curseur
 
